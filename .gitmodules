@@ -1,0 +1,4 @@
+[submodule "seastar"]
+    path = seastar
+    url = https://github.com/scylladb/seastar.git
+    ignore = dirty

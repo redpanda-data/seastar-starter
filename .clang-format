@@ -1,0 +1,38 @@
+BasedOnStyle: Mozilla
+Language: Cpp
+AccessModifierOffset: -4
+AlignAfterOpenBracket: AlwaysBreak
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+BreakBeforeBinaryOperators: All
+BreakBeforeBraces: Attach
+ColumnLimit: 80
+ContinuationIndentWidth: 2
+Cpp11BracedListStyle: true
+FixNamespaceComments: true
+IncludeBlocks: Regroup
+IncludeCategories:
+  # Seastar files (with angles)
+  - Regex:    '^<seastar/'
+    Priority: 2
+  # Other libraries
+  - Regex:    '^<.+/'
+    Priority: 4
+  # Std header files (with angles)
+  - Regex:    '^<'
+    Priority: 5
+  # Internal headers (with quotes)
+  - Regex:    '.h'
+    Priority: 1
+IndentCaseLabels: false
+IndentWidth: 4
+KeepEmptyLinesAtTheStartOfBlocks: false
+PenaltyBreakAssignment: 100
+PenaltyBreakBeforeFirstCallParameter: 10
+PenaltyReturnTypeOnItsOwnLine: 60
