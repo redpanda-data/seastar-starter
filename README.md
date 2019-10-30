@@ -7,7 +7,7 @@ seastar as a dependency.
 # Getting started
 
 ```bash
-git submodule update --init
+git submodule update --init --recursive
 sudo ./install-deps.sh
 cmake .
 make
