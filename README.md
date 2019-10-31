@@ -1,5 +1,7 @@
 # Seastar starter project
 
+[![Build Status](https://travis-ci.org/vectorizedio/seastar-starter.svg?branch=master)](https://travis-ci.org/vectorizedio/seastar-starter)
+
 This project contains a small [Seastar](https://github.com/scylladb/seastar)
 program and minimal cmake scaffolding for building both the sample program and
 seastar as a dependency.
@@ -7,7 +9,7 @@ seastar as a dependency.
 # Getting started
 
 ```bash
-git submodule update --init
+git submodule update --init --recursive
 sudo ./install-deps.sh
 cmake .
 make
