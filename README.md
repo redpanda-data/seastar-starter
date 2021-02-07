@@ -8,6 +8,9 @@ seastar as a dependency.
 
 # Getting started
 
+> Note: from time to time, things might drift. If you get stuck, please see test.sh and try it inside docker.
+> this is meant only as a sample, feel free to use upstream seastar and follow their installation process too.
+
 ```bash
 git submodule update --init --recursive
 sudo ./install-deps.sh
