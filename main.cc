@@ -1,6 +1,7 @@
 #include <seastar/core/app-template.hh>
 #include <seastar/core/sharded.hh>
 #include <seastar/core/sstring.hh>
+#include <seastar/core/reactor.hh>
 
 #include <chrono>
 #include <iostream>
@@ -17,7 +18,7 @@ public:
     seastar::sstring speak() {
         std::stringstream ss;
         ss << "msg: \"" << _msg << "\" from core "
-           << seastar::engine().cpu_id();
+           << seastar::this_shard_id();
         return ss.str();
     }
 

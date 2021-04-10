@@ -4,7 +4,7 @@ set -e
 this_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 images="
-fedora:30
+fedora:32
 "
 
 for img in ${images}; do
