@@ -9,6 +9,6 @@ fedora:32
 
 for img in ${images}; do
   docker run --rm -it --workdir=/root -v ${this_dir}:/s:ro,z \
-    ${img} /bin/bash -c "/s/install-deps.sh && cmake /s && make -j5 && ./main"
+    ${img} /bin/bash -c "/s/install-deps.sh && cmake /s && make && ./main"
 done
 
