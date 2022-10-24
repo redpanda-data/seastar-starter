@@ -2,6 +2,8 @@
 #include <seastar/core/sharded.hh>
 #include <seastar/core/sstring.hh>
 #include <seastar/core/reactor.hh>
+#include <seastar/core/coroutine.hh>
+#include <seastar/core/sleep.hh>
 
 #include <chrono>
 #include <iostream>
@@ -15,11 +17,12 @@ public:
       : _msg(msg) {
     }
 
-    seastar::sstring speak() {
+    seastar::future<seastar::sstring> speak() {
         std::stringstream ss;
         ss << "msg: \"" << _msg << "\" from core "
            << seastar::this_shard_id();
-        return ss.str();
+        co_await seastar::sleep(std::chrono::milliseconds(seastar::this_shard_id() * 100));
+        co_return ss.str();
     }
 
     seastar::future<> stop() {
