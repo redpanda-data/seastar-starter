@@ -1,39 +1,47 @@
 # Seastar starter project
 
-[![Build Status](https://travis-ci.org/vectorizedio/seastar-starter.svg?branch=master)](https://travis-ci.org/vectorizedio/seastar-starter)
-
 This project contains a small [Seastar](https://github.com/scylladb/seastar)
-program and minimal cmake scaffolding for building both the sample program and
-seastar as a dependency.
+program and minimal cmake scaffolding. The example contains both coroutines
+and continuation passing style uses of Seastar.
 
 # Getting started
 
-> Note: from time to time, things might drift. If you get stuck, please see test.sh and try it inside docker.
-> this is meant only as a sample, feel free to use upstream seastar and follow their installation process too.
+Install dependencies (assuming a recent verison of Ubuntu such as 22.04):
 
 ```bash
 git submodule update --init --recursive
-sudo ./install-deps.sh
-cmake .
-make
-./main
+seastar/install-dependencies.sh
+apt-get install -qq ninja-build clang
 ```
 
-Running the program `./main --msg sup` should produce output similar to:
+Configure and build:
 
 ```
+cmake -Bbuild -S. -GNinja
+ninja -C build
+```
+
+Run the example program `./main --msg sup`:
+
+```
+build/main --msg sup
+```
+
+Similar output to the following should be produced:
+
+```
+INFO  2022-10-24 20:18:56,540 [shard 0] speak-log - Processed speak request
+INFO  2022-10-24 20:18:57,540 [shard 1] speak-log - Processed speak request
+INFO  2022-10-24 20:18:58,540 [shard 2] speak-log - Processed speak request
+INFO  2022-10-24 20:18:59,540 [shard 3] speak-log - Processed speak request
+INFO  2022-10-24 20:19:00,540 [shard 4] speak-log - Processed speak request
+INFO  2022-10-24 20:19:01,540 [shard 5] speak-log - Processed speak request
 msg: "sup" from core 0
 msg: "sup" from core 1
 msg: "sup" from core 2
 msg: "sup" from core 3
 msg: "sup" from core 4
 msg: "sup" from core 5
-msg: "sup" from core 6
-msg: "sup" from core 7
-msg: "sup" from core 8
-msg: "sup" from core 9
-msg: "sup" from core 10
-msg: "sup" from core 11
 ```
 
 # Resources
@@ -44,8 +52,5 @@ msg: "sup" from core 11
 
 # Testing
 
-Tested on
-
-* Fedora 30
-
-See `test.sh` for details.
+This project uses a GitHub action to run the same set of instructions as above. Please
+see [.github/workflows/build.yml](.github/workflows/build.yml) for reference.
