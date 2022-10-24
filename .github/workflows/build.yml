@@ -1,0 +1,19 @@
+name: Build and test
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo seastar/install-dependencies.sh
+        sudo apt-get install -qq ninja-build clang
+    - name: Configure
+      run: cmake -Bbuild -S. -GNinja
+    - name: Build
+      run: ninja -C build
+    - name: Test
+      run: build/main
