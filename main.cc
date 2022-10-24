@@ -4,9 +4,12 @@
 #include <seastar/core/reactor.hh>
 #include <seastar/core/coroutine.hh>
 #include <seastar/core/sleep.hh>
+#include <seastar/util/log.hh>
 
 #include <chrono>
 #include <iostream>
+
+static seastar::logger lg("speak-log");
 
 // the speak service runs on every core (see `seastar::sharded<speak_service>`
 // below). when the `speak` method is invoked, it returns a message tagged with
@@ -21,7 +24,8 @@ public:
         std::stringstream ss;
         ss << "msg: \"" << _msg << "\" from core "
            << seastar::this_shard_id();
-        co_await seastar::sleep(std::chrono::milliseconds(seastar::this_shard_id() * 100));
+        co_await seastar::sleep(std::chrono::seconds(seastar::this_shard_id()));
+        lg.info("Processed speak request");
         co_return ss.str();
     }
 
