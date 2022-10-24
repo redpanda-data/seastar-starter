@@ -2,7 +2,7 @@
 
 This project contains a small [Seastar](https://github.com/scylladb/seastar)
 program and minimal cmake scaffolding. The example contains both coroutines
-and continuation passing style uses of Seastar.
+and continuation passing style uses of Seastar, and requires C++20.
 
 # Getting started
 
