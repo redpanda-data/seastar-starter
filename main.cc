@@ -2,24 +2,31 @@
 #include <seastar/core/sharded.hh>
 #include <seastar/core/sstring.hh>
 #include <seastar/core/reactor.hh>
+#include <seastar/core/coroutine.hh>
+#include <seastar/core/sleep.hh>
+#include <seastar/util/log.hh>
 
 #include <chrono>
 #include <iostream>
+
+static seastar::logger lg("speak-log");
 
 // the speak service runs on every core (see `seastar::sharded<speak_service>`
 // below). when the `speak` method is invoked, it returns a message tagged with
 // the core on which the method was invoked.
 class speak_service final {
 public:
-    speak_service(const seastar::sstring& msg)
-      : _msg(msg) {
+    speak_service(seastar::sstring msg)
+      : _msg(std::move(msg)) {
     }
 
-    seastar::sstring speak() {
+    seastar::future<seastar::sstring> speak() {
         std::stringstream ss;
         ss << "msg: \"" << _msg << "\" from core "
            << seastar::this_shard_id();
-        return ss.str();
+        co_await seastar::sleep(std::chrono::seconds(seastar::this_shard_id()));
+        lg.info("Processed speak request");
+        co_return ss.str();
     }
 
     seastar::future<> stop() {
