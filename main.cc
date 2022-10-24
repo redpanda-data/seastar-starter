@@ -13,8 +13,8 @@
 // the core on which the method was invoked.
 class speak_service final {
 public:
-    speak_service(const seastar::sstring& msg)
-      : _msg(msg) {
+    speak_service(seastar::sstring msg)
+      : _msg(std::move(msg)) {
     }
 
     seastar::future<seastar::sstring> speak() {
