@@ -2,10 +2,6 @@ name: Build and test
 on: [pull_request]
 
 jobs:
-  example_matrix:
-
-
-jobs:
   build:
     runs-on: ubuntu-22.04
     strategy:
