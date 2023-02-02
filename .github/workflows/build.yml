@@ -2,8 +2,15 @@ name: Build and test
 on: [pull_request]
 
 jobs:
+  example_matrix:
+
+
+jobs:
   build:
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        build_type: [Debug, Release]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -15,7 +22,7 @@ jobs:
         sudo seastar/install-dependencies.sh
         sudo apt-get install -qq ninja-build clang
     - name: Configure
-      run: cmake -Bbuild -S. -GNinja
+      run: cmake -Bbuild -S. -GNinja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
     - name: Build
       run: ninja -C build
     - name: Test
