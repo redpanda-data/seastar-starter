@@ -17,7 +17,7 @@ apt-get install -qq ninja-build clang
 Configure and build:
 
 ```
-cmake -Bbuild -S. -GNinja
+CXX=clang++ CC=clang cmake -Bbuild -S. -GNinja
 ninja -C build
 ```
 
