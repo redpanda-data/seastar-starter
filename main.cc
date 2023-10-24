@@ -57,9 +57,9 @@ int main(int argc, char** argv) {
 
         return speak.start(msg).then([&speak] {
             // sharded<>::map will run the provided lambda on each core. in this
-            // case, the speak method of the service is invoked and the messaes
+            // case, the speak method of the service is invoked and the messages
             // from each core are printed to stdout.
-            return speak.map([](auto s) { return s.speak(); })
+            return speak.map([](auto &s) { return s.speak(); })
               .then([](auto msgs) {
                   for (auto msg : msgs) {
                       std::cout << msg << std::endl;
