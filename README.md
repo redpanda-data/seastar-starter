@@ -4,7 +4,7 @@ This project contains a small [Seastar](https://github.com/scylladb/seastar)
 program and minimal cmake scaffolding. The example contains both coroutines
 and continuation passing style uses of Seastar.
 
-# Getting started
+# Building
 
 Install dependencies (assuming a recent verison of Ubuntu such as 22.04):
 
@@ -21,27 +21,55 @@ CXX=clang++ CC=clang cmake -Bbuild -S. -GNinja
 ninja -C build
 ```
 
-Run the example program `./main --msg sup`:
+# Running
+
+The sample program splits an input file into chunks. Each core reads a subset of
+the input file into memory and then writes this subset out to a new file. The
+size of the per-core subset may be larger than memory, in which case more than
+one subset per core will be generated.
+
+First, generate some data. This command will generate around 200mb of data.
 
 ```
-build/main --msg sup
+dd if=/dev/zero of=input.dat bs=4096 count=50000
 ```
 
-Similar output to the following should be produced:
+Next, invoke the program. Here we limit the total system memory to 500 MB, use 5
+cores, and then we further limit memory to 1% of the amount available on each
+core. Each command line argument is optional except the input file. If the
+amount of memory or the number of cores are not specified then the program will
+try to use all of the resources available.
 
 ```
-INFO  2022-10-24 20:18:56,540 [shard 0] speak-log - Processed speak request
-INFO  2022-10-24 20:18:57,540 [shard 1] speak-log - Processed speak request
-INFO  2022-10-24 20:18:58,540 [shard 2] speak-log - Processed speak request
-INFO  2022-10-24 20:18:59,540 [shard 3] speak-log - Processed speak request
-INFO  2022-10-24 20:19:00,540 [shard 4] speak-log - Processed speak request
-INFO  2022-10-24 20:19:01,540 [shard 5] speak-log - Processed speak request
-msg: "sup" from core 0
-msg: "sup" from core 1
-msg: "sup" from core 2
-msg: "sup" from core 3
-msg: "sup" from core 4
-msg: "sup" from core 5
+$ ./main --input input.dat -m500 -c5 --memory-pct 1.0
+```
+
+The program should output a summary on each core about the data it is
+responsible for, and then once per second a per-core progress is printed.
+
+```
+INFO  2024-01-13 13:10:14,214 [shard 0] splitter - Processing 10000 pages with index 0 to 9999
+INFO  2024-01-13 13:10:14,214 [shard 1] splitter - Processing 10000 pages with index 10000 to 19999
+INFO  2024-01-13 13:10:14,214 [shard 3] splitter - Processing 10000 pages with index 30000 to 39999
+INFO  2024-01-13 13:10:14,214 [shard 2] splitter - Processing 10000 pages with index 20000 to 29999
+INFO  2024-01-13 13:10:14,214 [shard 4] splitter - Processing 10000 pages with index 40000 to 49999
+INFO  2024-01-13 13:10:14,214 [shard 0] splitter - Progress: 0.0 0.0 0.0 0.0 0.0
+INFO  2024-01-13 13:10:15,214 [shard 0] splitter - Progress: 54.5 54.3 55.2 53.8 53.6
+INFO  2024-01-13 13:10:16,215 [shard 0] splitter - Progress: 100.0 100.0 100.0 100.0 100.0
+```
+
+After the program exists there should be a number of chunk files on disk. The
+chunk file format is `chunk.<core-id>.<chunk-id>`.
+
+```
+$ ls -l chunk*
+-rw-r--r--. 1 user user 331776 Jan 13 13:10 chunk.core-0.0
+-rw-r--r--. 1 user user 331776 Jan 13 13:10 chunk.core-0.1
+-rw-r--r--. 1 user user 331776 Jan 13 13:10 chunk.core-0.10
+-rw-r--r--. 1 user user 331776 Jan 13 13:10 chunk.core-0.100
+-rw-r--r--. 1 user user 331776 Jan 13 13:10 chunk.core-0.101
+-rw-r--r--. 1 user user 331776 Jan 13 13:10 chunk.core-0.102
+-rw-r--r--. 1 user user 331776 Jan 13 13:10 chunk.core-0.103
 ```
 
 # Resources

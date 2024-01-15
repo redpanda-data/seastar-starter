@@ -22,4 +22,7 @@ jobs:
     - name: Build
       run: ninja -C build
     - name: Test
-      run: build/main
+      run: |
+        dd if=/dev/zero of=input.dat bs=4096 count=10000
+        build/main --input input.dat -c2
+        ls -l
