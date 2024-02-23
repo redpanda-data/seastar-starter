@@ -6,7 +6,9 @@ and continuation passing style uses of Seastar.
 
 # Building
 
-Install dependencies (assuming a recent verison of Ubuntu such as 22.04):
+See the section below on requirements for specific environments that are known to work.
+
+Install dependencies:
 
 ```bash
 git submodule update --init --recursive
@@ -17,9 +19,24 @@ apt-get install -qq ninja-build clang
 Configure and build:
 
 ```
-CXX=clang++ CC=clang cmake -Bbuild -S. -GNinja
+cmake -Bbuild -S. -GNinja
 ninja -C build
 ```
+
+Or if you need to specify a non-default compiler:
+
+```
+CC=clang CXX=clang++ cmake -Bbuild -S. -GNinja
+ninja -C build
+```
+
+# Requirements
+
+A compiler that supports at least C++17 is required. Some examples known to work:
+
+* Ubuntu 22.04. The default GCC version of is new enough to work. This should be installed by default with the instructions above. This is also the combination that runs in our CI. See [.github/workflows/build.yml](.github/workflows/build.yml). Both clang-14 and clang-15 have issues on Ubuntu 22.04.
+* Ubuntu 23.10. Both the default GCC 13.2.0 and Clang 16 are known to work out of the box.
+* Fedora 38 and newer are known to work.
 
 # Running
 
