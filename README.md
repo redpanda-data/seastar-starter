@@ -11,30 +11,30 @@ See the section below on requirements for specific environments that are known t
 Install dependencies:
 
 ```bash
-git submodule update --init --recursive
-seastar/install-dependencies.sh
-apt-get install -qq ninja-build clang
+$> git submodule update --init --recursive
+$> seastar/install-dependencies.sh
+$> apt-get install -qq ninja-build clang
 ```
 
 Configure and build:
 
 ```
-cmake -Bbuild -S. -GNinja
-ninja -C build
+$> cmake -Bbuild -S. -GNinja
+$> ninja -C build
 ```
 
 Or if you need to specify a non-default compiler:
 
 ```
-CC=clang CXX=clang++ cmake -Bbuild -S. -GNinja
-ninja -C build
+$> CC=clang CXX=clang++ cmake -Bbuild -S. -GNinja
+$> ninja -C build
 ```
 
 # Requirements
 
 A compiler that supports at least C++17 is required. Some examples known to work:
 
-* Ubuntu 22.04. The default GCC version of is new enough to work. This should be installed by default with the instructions above. This is also the combination that runs in our CI. See [.github/workflows/build.yml](.github/workflows/build.yml). Both clang-14 and clang-15 have issues on Ubuntu 22.04.
+* Ubuntu 22.04. The default GCC version is new enough to work. This should be installed by default with the instructions above. This is also the combination that runs in our CI. See [.github/workflows/build.yml](.github/workflows/build.yml). Both clang-14 and clang-15 have issues on Ubuntu 22.04.
 * Ubuntu 23.10. Both the default GCC 13.2.0 and Clang 16 are known to work out of the box.
 * Fedora 38 and newer are known to work.
 
@@ -58,7 +58,7 @@ amount of memory or the number of cores are not specified then the program will
 try to use all of the resources available.
 
 ```
-$ ./main --input input.dat -m500 -c5 --memory-pct 1.0
+$ build/main --input input.dat -m500 -c5 --memory-pct 1.0
 ```
 
 The program should output a summary on each core about the data it is
